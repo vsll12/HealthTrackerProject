@@ -10,7 +10,9 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Forum from "./pages/Forum";
-import CalorieCalculator from "./components/Calculator";
+import CalorieCalculator from "./pages/CaloriesCalculator";
+import GoalTracker from "./pages/GoalTracker";
+import MealsCalculator from "./pages/MealCaloriesCalculator"
 
 
 const ProtectedRoute = ({ children }) => {
@@ -56,6 +58,8 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route path="/calculator" element={<CalorieCalculator/>}/>
+      <Route path="/goals" element={<GoalTracker/>}/>
+      <Route path="/meals-calculator" element={<MealsCalculator/>}/>
     </Routes>
   );
 }

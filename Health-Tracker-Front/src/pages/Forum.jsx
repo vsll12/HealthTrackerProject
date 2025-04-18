@@ -4,7 +4,7 @@ import { MdAttachFile, MdKeyboardBackspace } from "react-icons/md";
 import * as signalR from "@microsoft/signalr";
 
 const API_URL = "https://localhost:7094";
-const FRONTEND_URL = "http://localhost:5173"; // Verify this matches your frontend port
+const FRONTEND_URL = "http://localhost:5174"; // Verify this matches your frontend port
 
 const Forum = ({ userId }) => {
   const navigate = useNavigate();

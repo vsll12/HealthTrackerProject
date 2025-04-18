@@ -1,14 +1,4 @@
-import { useEffect, useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  MenuItem,
-  Select,
-  TextField,
-  Button,
-} from "@mui/material";
-import axios from "axios";
+import { useState } from "react";
 
 export default function CalorieCalculator() {
   const [gender, setGender] = useState("male");
@@ -42,80 +32,87 @@ export default function CalorieCalculator() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <Card className="shadow-lg rounded-2xl p-6 bg-white dark:bg-gray-800 max-w-md w-full">
-        <CardHeader
-          title="Calorie Calculator"
-          className="text-center font-bold"
-        />
-        <CardContent className="flex flex-col gap-4">
-          <Select
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
+      <div className="w-full max-w-xl bg-white rounded-2xl shadow-lg p-8">
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
+          🔥 Calorie Calculator
+        </h2>
+
+        <div className="grid grid-cols-1 gap-4">
+          <select
             value={gender}
             onChange={(e) => setGender(e.target.value)}
-            fullWidth
+            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <MenuItem value="male">Male</MenuItem>
-            <MenuItem value="female">Female</MenuItem>
-          </Select>
-          <TextField
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+
+          <input
             type="number"
-            label="Age"
             value={age}
             onChange={(e) => setAge(e.target.value)}
-            fullWidth
+            placeholder="Age"
+            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <TextField
+
+          <input
             type="number"
-            label="Weight (kg)"
             value={weight}
             onChange={(e) => setWeight(e.target.value)}
-            fullWidth
+            placeholder="Weight (kg)"
+            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <TextField
+
+          <input
             type="number"
-            label="Height (cm)"
             value={height}
             onChange={(e) => setHeight(e.target.value)}
-            fullWidth
+            placeholder="Height (cm)"
+            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <Select
+
+          <select
             value={activityLevel}
             onChange={(e) => setActivityLevel(e.target.value)}
-            fullWidth
+            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <MenuItem value="sedentary">Sedentary</MenuItem>
-            <MenuItem value="lightly-active">Lightly Active</MenuItem>
-            <MenuItem value="moderately-active">Moderately Active</MenuItem>
-            <MenuItem value="very-active">Very Active</MenuItem>
-            <MenuItem value="extremely-active">Extremely Active</MenuItem>
-          </Select>
-          <Select
+            <option value="sedentary">Sedentary</option>
+            <option value="lightly-active">Lightly Active</option>
+            <option value="moderately-active">Moderately Active</option>
+            <option value="very-active">Very Active</option>
+            <option value="extremely-active">Extremely Active</option>
+          </select>
+
+          <select
             value={goal}
             onChange={(e) => setGoal(e.target.value)}
-            fullWidth
+            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <MenuItem value="lose-weight">Lose Weight</MenuItem>
-            <MenuItem value="maintain-weight">Maintain Weight</MenuItem>
-            <MenuItem value="gain-weight">Gain Weight</MenuItem>
-          </Select>
-          <Button
-            variant="contained"
-            color="primary"
+            <option value="lose-weight">Lose Weight</option>
+            <option value="maintain-weight">Maintain Weight</option>
+            <option value="gain-weight">Gain Weight</option>
+          </select>
+
+          <button
             onClick={calculate}
-            fullWidth
+            className="bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300"
           >
             Calculate
-          </Button>
-          {result && (
-            <div className="text-center mt-4 text-lg">
-              <p>Daily Calories: {result.tdee.toFixed(2)}</p>
-              <p>Protein: {result.protein.toFixed(2)} g</p>
-              <p>Fat: {result.fat.toFixed(2)} g</p>
-              <p>Carbs: {result.carbs.toFixed(2)} g</p>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+          </button>
+        </div>
+
+        {result && (
+          <div className="mt-6 p-6 bg-gray-100 rounded-xl text-center space-y-2 text-gray-700">
+            <p className="text-lg font-medium">
+              🔋 Daily Calories: {result.tdee.toFixed(2)} kcal
+            </p>
+            <p>🥚 Protein: {result.protein.toFixed(2)} g</p>
+            <p>🧈 Fat: {result.fat.toFixed(2)} g</p>
+            <p>🍞 Carbs: {result.carbs.toFixed(2)} g</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -48,7 +48,10 @@ function LineChart01({
           tooltip: {
             callbacks: {
               title: () => false, // Disable tooltip title
-              label: (context) => formatValue(context.parsed.y),
+              label: (context) => {
+                const value = formatValue(context.parsed.y); 
+                return `${value.replace('$', '')} ml`; 
+              }
             },
             bodyColor: darkMode ? tooltipBodyColor.dark : tooltipBodyColor.light,
             backgroundColor: darkMode ? tooltipBgColor.dark : tooltipBgColor.light,

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import Header from "../partials/Header";
 import Sidebar from "../partials/Sidebar";
@@ -7,15 +8,33 @@ import {
   CardContent,
   Typography,
   Avatar,
-  Grid,
   Button,
   Container,
   CircularProgress,
+  TextField,
 } from "@mui/material";
-import { logout } from "../services/authService";
 
 const Profile = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    // If there's no token, redirect to login page
+    if (!token) {
+      navigate("/login");
+    }
+  }, [navigate]);
+
   const [user, setUser] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    age: "",
+    weight: "",
+    height: "",
+  });
+  const [selectedFile, setSelectedFile] = useState(null);
   const token = localStorage.getItem("token");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -26,6 +45,12 @@ const Profile = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(response.data);
+        setFormData({
+          name: response.data.name,
+          age: response.data.age,
+          weight: response.data.weight,
+          height: response.data.height,
+        });
       } catch (error) {
         console.error("Profil yüklenirken hata oluştu:", error);
       }
@@ -33,6 +58,50 @@ const Profile = () => {
 
     if (token) fetchProfile();
   }, [token]);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
+
+  const handleUpdateProfile = async () => {
+    const profileData = new FormData();
+    profileData.append("name", formData.name);
+    profileData.append("age", formData.age);
+    profileData.append("weight", formData.weight);
+    profileData.append("height", formData.height);
+
+    if (selectedFile) {
+      profileData.append("file", selectedFile);
+    }
+
+    try {
+      const response = await axios.put(
+        "https://localhost:7094/api/Profile",
+        profileData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      setUser((prev) => ({
+        ...prev,
+        ...formData,
+        profileImagePath:
+          response.data.ProfileImagePath || prev.profileImagePath,
+      }));
+      setIsEditing(false);
+      alert("Profil başarıyla güncellendi!");
+    } catch (error) {
+      console.error("Profil güncellenirken hata oluştu:", error);
+    }
+  };
 
   if (!user)
     return (
@@ -67,33 +136,98 @@ const Profile = () => {
                     boxShadow: 2,
                   }}
                 />
-                <CardContent>
-                  <Typography variant="h5" fontWeight="bold" gutterBottom>
-                    {user.name}
-                  </Typography>
-                  <Typography variant="body1" color="textSecondary">
-                    <b>Age:</b> {user.age}
-                  </Typography>
-                  <Typography variant="body1" color="textSecondary">
-                    <b>Weight:</b> {user.weight} kg
-                  </Typography>
-                  <Typography variant="body1" color="textSecondary">
-                    <b>Height:</b> {user.height} cm
-                  </Typography>
-                  <Typography variant="body1" color="textSecondary">
-                    <b>Gender:</b> {user.gender}
-                  </Typography>
-                  <Typography variant="body1" color="textSecondary">
-                    <b>Email:</b> {user.email}
-                  </Typography>
-                </CardContent>
-                <Button
-                  variant="contained"
-                  sx={{ mt: 2 }}
-                  color="primary"
-                >
-                  Edit Profile
-                </Button>
+
+                {isEditing ? (
+                  <CardContent>
+                    <TextField
+                      fullWidth
+                      label="Name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      margin="dense"
+                    />
+                    <TextField
+                      fullWidth
+                      label="Age"
+                      name="age"
+                      value={formData.age}
+                      onChange={handleChange}
+                      margin="dense"
+                      type="number"
+                    />
+                    <TextField
+                      fullWidth
+                      label="Weight (kg)"
+                      name="weight"
+                      value={formData.weight}
+                      onChange={handleChange}
+                      margin="dense"
+                      type="number"
+                    />
+                    <TextField
+                      fullWidth
+                      label="Height (cm)"
+                      name="height"
+                      value={formData.height}
+                      onChange={handleChange}
+                      margin="dense"
+                      type="number"
+                    />
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      style={{ marginTop: "10px" }}
+                    />
+
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      sx={{ mt: 2 }}
+                      onClick={handleUpdateProfile}
+                    >
+                      Save Changes
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      sx={{ mt: 2, ml: 1 }}
+                      onClick={() => setIsEditing(false)}
+                    >
+                      Cancel
+                    </Button>
+                  </CardContent>
+                ) : (
+                  <CardContent>
+                    <Typography variant="h5" fontWeight="bold" gutterBottom>
+                      {user.name}
+                    </Typography>
+                    <Typography variant="body1" color="textSecondary">
+                      <b>Age:</b> {user.age}
+                    </Typography>
+                    <Typography variant="body1" color="textSecondary">
+                      <b>Weight:</b> {user.weight} kg
+                    </Typography>
+                    <Typography variant="body1" color="textSecondary">
+                      <b>Height:</b> {user.height} cm
+                    </Typography>
+                    <Typography variant="body1" color="textSecondary">
+                      <b>Gender:</b> {user.gender}
+                    </Typography>
+                    <Typography variant="body1" color="textSecondary">
+                      <b>Email:</b> {user.email}
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      sx={{ mt: 2 }}
+                      color="primary"
+                      onClick={() => setIsEditing(true)}
+                    >
+                      Edit Profile
+                    </Button>
+                  </CardContent>
+                )}
               </Card>
             </Container>
           </div>
