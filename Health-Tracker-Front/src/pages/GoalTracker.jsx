@@ -60,7 +60,7 @@ const Profile = () => {
           <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
             <div className="w-full max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg">
               <Button variant="contained" color="primary" className="mb-4" onClick={() => setOpenModal(true)}>
-                Yeni Hedef Ekle
+                Add New Goal
               </Button>
               {goals.map((goal) => (
                 <div key={goal.id} className="p-4 mb-4 bg-gray-100 rounded-lg shadow flex justify-between items-center">
@@ -88,33 +88,33 @@ const Profile = () => {
       </div>
 
       <Dialog open={openModal} onClose={() => setOpenModal(false)}>
-        <DialogTitle>Yeni Hedef Belirle</DialogTitle>
+        <DialogTitle>Create New Goal</DialogTitle>
         <DialogContent>
           <Select fullWidth value={goalType} onChange={(e) => setGoalType(e.target.value)} displayEmpty>
-            <MenuItem value="">Hedef Türü Seç</MenuItem>
-            <MenuItem value="Calories">Kalori</MenuItem>
-            <MenuItem value="WaterIntake">Su Tüketimi</MenuItem>
-            <MenuItem value="Step">Adım</MenuItem>
+            <MenuItem value="">Set Goal Type</MenuItem>
+            <MenuItem value="Calories">Calorie</MenuItem>
+            <MenuItem value="WaterIntake">Water Intake</MenuItem>
+            <MenuItem value="Step">Step</MenuItem>
           </Select>
           <TextField
             fullWidth
             type="number"
-            label="Hedef"
+            label="Goal"
             variant="outlined"
             className="mt-4"
             value={goalValue}
             onChange={(e) => setGoalValue(e.target.value)}
           />
           <Select fullWidth value={goalFrequency} onChange={(e) => setGoalFrequency(e.target.value)} displayEmpty className="mt-4">
-            <MenuItem value="">Hedef Sıklığını Seç</MenuItem>
-            <MenuItem value="Daily">Günlük</MenuItem>
-            <MenuItem value="Weekly">Haftalık</MenuItem>
-            <MenuItem value="Monthly">Aylık</MenuItem>
+            <MenuItem value="">Select Goal Frequency</MenuItem>
+            <MenuItem value="Daily">Daily</MenuItem>
+            <MenuItem value="Weekly">Weekly</MenuItem>
+            <MenuItem value="Monthly">Monthly</MenuItem>
           </Select>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenModal(false)} color="secondary">İptal</Button>
-          <Button onClick={handleCreateGoal} color="primary" disabled={!goalType || !goalValue || !goalFrequency}>Oluştur</Button>
+          <Button onClick={handleCreateGoal} color="primary" disabled={!goalType || !goalValue || !goalFrequency}>Create</Button>
         </DialogActions>
       </Dialog>
     </div>

@@ -22,7 +22,7 @@ namespace Auth_jwt
 			{
 				options.AddPolicy("AllowChatApp", policy =>
 				{
-					policy.WithOrigins("http://localhost:5181") // Frontend URL
+					policy.WithOrigins("http://localhost:5174") // Frontend URL
 						  .AllowAnyMethod()
 						  .AllowAnyHeader()
 						  .AllowCredentials(); // Required for SignalR with auth

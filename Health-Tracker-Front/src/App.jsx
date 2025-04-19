@@ -15,8 +15,8 @@ import GoalTracker from "./pages/GoalTracker";
 import MealsCalculator from "./pages/MealCaloriesCalculator"
 import Calendar from "./pages/Calendar";
 import AIChat from "./pages/AIChat";
-
-
+import MedicineInformation from "./pages/MedicineInformation";
+import ExercisesLibrary from "./pages/WorkoutLibrary"
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("token");
@@ -65,6 +65,8 @@ function App() {
       <Route path="/meals-calculator" element={<MealsCalculator/>}/>
       <Route path="/calendar" element={<Calendar />} />
       <Route path="/ai-chat" element={<AIChat />} />
+      <Route path="/medicine-information" element={<MedicineInformation/>} />
+      <Route path="/exercises-library" element={<ExercisesLibrary/>} />
     </Routes>
   );
 }
