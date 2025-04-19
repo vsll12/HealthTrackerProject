@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using OpenAI;
 
 namespace Auth_jwt
 {
@@ -13,6 +14,7 @@ namespace Auth_jwt
 	{
 		public static void Main(string[] args)
 		{
+			
 			var builder = WebApplication.CreateBuilder(args);
 
 			// CORS configuration for SignalR and frontend
@@ -20,7 +22,7 @@ namespace Auth_jwt
 			{
 				options.AddPolicy("AllowChatApp", policy =>
 				{
-					policy.WithOrigins("http://localhost:5173") // Frontend URL
+					policy.WithOrigins("http://localhost:5181") // Frontend URL
 						  .AllowAnyMethod()
 						  .AllowAnyHeader()
 						  .AllowCredentials(); // Required for SignalR with auth

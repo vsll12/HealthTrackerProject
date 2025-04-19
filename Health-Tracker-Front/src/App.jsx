@@ -13,6 +13,9 @@ import Forum from "./pages/Forum";
 import CalorieCalculator from "./pages/CaloriesCalculator";
 import GoalTracker from "./pages/GoalTracker";
 import MealsCalculator from "./pages/MealCaloriesCalculator"
+import Calendar from "./pages/Calendar";
+import AIChat from "./pages/AIChat";
+
 
 
 const ProtectedRoute = ({ children }) => {
@@ -60,6 +63,8 @@ function App() {
       <Route path="/calculator" element={<CalorieCalculator/>}/>
       <Route path="/goals" element={<GoalTracker/>}/>
       <Route path="/meals-calculator" element={<MealsCalculator/>}/>
+      <Route path="/calendar" element={<Calendar />} />
+      <Route path="/ai-chat" element={<AIChat />} />
     </Routes>
   );
 }

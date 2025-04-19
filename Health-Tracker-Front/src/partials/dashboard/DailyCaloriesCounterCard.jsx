@@ -236,6 +236,7 @@ function DailyCaloriesCounterCard() {
               Today ({new Date().toLocaleDateString()})
             </div>
             <input
+              style={{width:150}}
               type="number"
               value={newCalories}
               onChange={handleCaloriesChange}
