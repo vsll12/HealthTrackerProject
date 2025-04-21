@@ -64,7 +64,7 @@ function Dashboard() {
             </div>
 
             {/* Cards */}
-            <div className="grid grid-cols-12 gap-6">
+            <div className="grid grid-cols-1 gap-6">
               {/* Line chart (Acme Plus) */}
               <StepCounterCard />
               {/* Line chart (Acme Advanced) */}

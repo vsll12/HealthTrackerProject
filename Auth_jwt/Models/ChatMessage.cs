@@ -1,6 +1,6 @@
 ﻿namespace Auth_jwt.Models
 {
-	public class ChatRequest
+	public class ChatMessage
 	{
 		public string Message { get; set; }
 	}

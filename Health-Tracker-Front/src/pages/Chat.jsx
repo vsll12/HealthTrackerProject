@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import * as signalR from "@microsoft/signalr";
-import { useParams, useNavigate } from "react-router-dom"; // Added useNavigate
+import { useParams, useNavigate } from "react-router-dom"; 
 import { MdDelete } from "react-icons/md";
 import { BiSolidMessageAltEdit } from "react-icons/bi";
 import { MdKeyboardBackspace } from "react-icons/md";
@@ -9,7 +9,7 @@ const API_URL = "https://localhost:7094";
 
 const Chat = ({ userId }) => {
   const { id: friendId } = useParams();
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate();
   const [friends, setFriends] = useState([]);
   const [selectedFriend, setSelectedFriend] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -31,22 +31,14 @@ const Chat = ({ userId }) => {
           return;
         }
 
-        console.log(`Fetching friends for user ${userId}...`);
         const response = await fetch(`${API_URL}/api/friends/friends/${userId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        console.log("Fetch friends response status:", response.status);
         if (response.ok) {
           const data = await response.json();
-          console.log("Friends data:", data);
           setFriends(data);
           setSelectedFriend(data.find((f) => f.id === friendId) || null);
-          if (data.length > 0) {
-            console.log("First friend's name:", data[0]?.name);
-          } else {
-            console.log("No friends returned.");
-          }
         } else {
           console.error("Failed to fetch friends, status:", response.status);
         }
@@ -195,188 +187,60 @@ const Chat = ({ userId }) => {
   }, [messages]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        height: "100vh",
-        fontFamily: "'Segoe UI', sans-serif",
-        background: "#121212",
-      }}
-    >
+    <div className="flex h-screen bg-gray-900 font-sans">
       {/* Friends Sidebar */}
-      <div
-        style={{
-          width: "350px",
-          background: "#1f2a44",
-          borderRight: "1px solid #2a2f32",
-          padding: "10px",
-          overflowY: "auto",
-        }}
-      >
-        <h3
-          style={{
-            fontSize: "16px",
-            fontWeight: "bold",
-            color: "#00bfa5",
-            padding: "10px",
-            margin: "0",
-          }}
-        >
-          Chats
-        </h3>
-        <ul style={{ listStyleType: "none", padding: "0" }}>
+      <div className="w-80 bg-gray-800 border-r border-gray-700 p-4 overflow-y-auto">
+        <h3 className="text-lg font-bold text-teal-500 mb-4">Chats</h3>
+        <ul className="space-y-2">
           {friends.length > 0 ? (
             friends.map((friend) => (
               <li
                 key={friend.id}
                 onClick={() => setSelectedFriend(friend)}
-                style={{
-                  padding: "15px",
-                  cursor: "pointer",
-                  background:
-                    selectedFriend?.id === friend.id ? "#2a2f32" : "transparent",
-                  borderBottom: "1px solid #2a2f32",
-                  display: "flex",
-                  alignItems: "center",
-                  transition: "background 0.2s",
-                }}
-                onMouseOver={(e) =>
-                  selectedFriend?.id !== friend.id &&
-                  (e.target.style.background = "#252d47")
-                }
-                onMouseOut={(e) =>
-                  selectedFriend?.id !== friend.id &&
-                  (e.target.style.background = "transparent")
-                }
+                className={`p-4 cursor-pointer flex items-center hover:bg-gray-700 ${
+                  selectedFriend?.id === friend.id ? "bg-gray-700" : ""
+                }`}
               >
-                <div
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    background: "#00bfa5",
-                    borderRadius: "50%",
-                    marginRight: "10px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "#fff",
-                    fontSize: "18px",
-                  }}
-                >
+                <div className="w-10 h-10 bg-teal-500 rounded-full flex items-center justify-center text-white text-xl">
                   {friend.name[0]}
                 </div>
-                <span style={{ fontSize: "15px", color: "#e9ecef" }}>
-                  {friend.name}
-                </span>
+                <span className="ml-4 text-white text-sm">{friend.name}</span>
               </li>
             ))
           ) : (
-            <p style={{ color: "#8696a0", fontSize: "14px", padding: "15px" }}>
-              No friends yet.
-            </p>
+            <p className="text-gray-500 text-sm">No friends yet.</p>
           )}
         </ul>
       </div>
 
       {/* Chat Section */}
-      <div
-        style={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          background: "#121212",
-        }}
-      >
+      <div className="flex-1 flex flex-col bg-gray-900">
         {selectedFriend ? (
           <>
-            <div
-              style={{
-                padding: "10px 20px",
-                background: "#1f2a44",
-                color: "#e9ecef",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between", // Space out elements
-                boxShadow: "0 1px 3px rgba(0, 0, 0, 0.3)",
-                position: "sticky",
-                top: 0,
-                zIndex: 1,
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <div
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    background: "#00bfa5",
-                    borderRadius: "50%",
-                    marginRight: "15px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "#fff",
-                    fontSize: "18px",
-                  }}
-                >
+            <div className="flex items-center justify-between p-4 bg-gray-800 text-white shadow-md sticky top-0 z-10">
+              <div className="flex items-center">
+                <div className="w-10 h-10 bg-teal-500 rounded-full flex items-center justify-center text-white text-xl">
                   {selectedFriend.name[0]}
                 </div>
-                <h2
-                  style={{
-                    fontSize: "18px",
-                    fontWeight: "normal",
-                    margin: 0,
-                  }}
-                >
-                  {selectedFriend.name}
-                </h2>
+                <h2 className="ml-4 text-lg">{selectedFriend.name}</h2>
               </div>
               <button
                 onClick={goToDashboard}
-                style={{
-                  padding: "8px 16px",
-                  background: "#d9534f",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                  fontSize: "14px",
-                  transition: "background 0.2s",
-                }}
-                onMouseOver={(e) => (e.target.style.background = "#c9302c")}
-                onMouseOut={(e) => (e.target.style.background = "#d9534f")}
+                className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700"
               >
                 <MdKeyboardBackspace />
               </button>
             </div>
-            <div
-              style={{
-                flex: 1,
-                overflowY: "auto",
-                padding: "20px",
-                background: "#121212",
-              }}
-            >
+            <div className="flex-1 overflow-y-auto p-6">
               {messages.map((msg) => (
                 <div
                   key={msg.id}
-                  style={{
-                    display: "flex",
-                    justifyContent:
-                      msg.senderId === userId ? "flex-end" : "flex-start",
-                    marginBottom: "8px",
-                    position: "relative",
-                  }}
+                  className={`flex mb-2 ${
+                    msg.senderId === userId ? "justify-end" : "justify-start"
+                  }`}
                 >
                   <div
-                    style={{
-                      background:
-                        msg.senderId === userId ? "#005c4b" : "#2a2f32",
-                      padding: "8px 12px",
-                      borderRadius: "7.5px",
-                      maxWidth: "70%",
-                      boxShadow: "0 1px 0.5px rgba(0, 0, 0, 0.3)",
-                      position: "relative",
-                    }}
+                    className={`bg-${msg.senderId === userId ? "teal-600" : "gray-700"} p-4 rounded-lg max-w-xs`}
                   >
                     {editingMessageId === msg.id ? (
                       <div>
@@ -384,39 +248,18 @@ const Chat = ({ userId }) => {
                           type="text"
                           value={editedContent}
                           onChange={(e) => setEditedContent(e.target.value)}
-                          style={{
-                            width: "100%",
-                            padding: "5px",
-                            borderRadius: "4px",
-                            border: "1px solid #3e4a5b",
-                            fontSize: "14px",
-                            background: "#1f2a44",
-                            color: "#e9ecef",
-                          }}
+                          className="w-full p-2 bg-gray-800 text-white border border-gray-700 rounded-lg"
                         />
-                        <div style={{ marginTop: "5px", textAlign: "right" }}>
+                        <div className="flex justify-end mt-2">
                           <button
                             onClick={updateMessage}
-                            style={{
-                              padding: "4px 8px",
-                              background: "#00bfa5",
-                              color: "#fff",
-                              border: "none",
-                              borderRadius: "4px",
-                              marginRight: "5px",
-                            }}
+                            className="bg-teal-500 text-white px-4 py-2 rounded-lg mr-2"
                           >
                             Save
                           </button>
                           <button
                             onClick={() => setEditingMessageId(null)}
-                            style={{
-                              padding: "4px 8px",
-                              background: "#d9534f",
-                              color: "#fff",
-                              border: "none",
-                              borderRadius: "4px",
-                            }}
+                            className="bg-red-600 text-white px-4 py-2 rounded-lg"
                           >
                             Cancel
                           </button>
@@ -424,70 +267,22 @@ const Chat = ({ userId }) => {
                       </div>
                     ) : (
                       <>
-                        <p
-                          style={{
-                            margin: 0,
-                            fontSize: "14px",
-                            color: "#e9ecef",
-                          }}
-                        >
-                          {msg.message}
-                        </p>
-                        <div
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            marginTop: "2px",
-                          }}
-                        >
-                          <small
-                            style={{
-                              fontSize: "11px",
-                              color: "#8696a0",
-                            }}
-                          >
-                            {new Date(msg.timestamp).toLocaleTimeString([], {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}
-                          </small>
+                        <p className="text-white">{msg.message}</p>
+                        <div className="flex justify-between items-center mt-2 text-xs text-gray-400">
+                          <span>{new Date(msg.timestamp).toLocaleTimeString()}</span>
                           {msg.senderId === userId && (
-                            <div
-                              style={{
-                                display: "flex",
-                                gap: "8px",
-                              }}
-                            >
+                            <div className="flex gap-2">
                               <button
                                 onClick={() => startEditing(msg)}
-                                style={{
-                                  background: "none",
-                                  border: "none",
-                                  cursor: "pointer",
-                                  color: "#ffffff",
-                                  fontSize: "16px",
-                                  padding: 0,
-                                  display: "flex",
-                                  alignItems: "center",
-                                }}
+                                className="text-teal-500"
                               >
-                                <BiSolidMessageAltEdit size={18} />
+                                <BiSolidMessageAltEdit />
                               </button>
                               <button
                                 onClick={() => deleteMessage(msg.id)}
-                                style={{
-                                  background: "none",
-                                  border: "none",
-                                  cursor: "pointer",
-                                  color: "#ffffff",
-                                  fontSize: "16px",
-                                  padding: 0,
-                                  display: "flex",
-                                  alignItems: "center",
-                                }}
+                                className="text-red-500"
                               >
-                                <MdDelete size={18} />
+                                <MdDelete />
                               </button>
                             </div>
                           )}
@@ -498,30 +293,12 @@ const Chat = ({ userId }) => {
                 </div>
               ))}
               {isTyping && (
-                <p
-                  style={{
-                    fontStyle: "italic",
-                    color: "#8696a0",
-                    fontSize: "13px",
-                    margin: "10px 0",
-                  }}
-                >
-                  {selectedFriend.name} is typing...
-                </p>
+                <p className="italic text-gray-500 text-sm">Typing...</p>
               )}
               <div ref={messagesEndRef}></div>
             </div>
 
-            {/* Input Section */}
-            <div
-              style={{
-                padding: "10px",
-                background: "#1f2a44",
-                display: "flex",
-                alignItems: "center",
-                boxShadow: "0 -1px 3px rgba(0, 0, 0, 0.3)",
-              }}
-            >
+            <div className="bg-gray-800 p-4 flex items-center">
               <input
                 type="text"
                 value={message}
@@ -530,55 +307,22 @@ const Chat = ({ userId }) => {
                   handleTyping();
                 }}
                 placeholder="Type a message"
-                style={{
-                  flex: 1,
-                  padding: "10px 15px",
-                  borderRadius: "20px",
-                  border: "none",
-                  background: "#2a2f32",
-                  fontSize: "14px",
-                  marginRight: "10px",
-                  color: "#e9ecef",
-                  boxShadow: "inset 0 1px 2px rgba(0, 0, 0, 0.1)",
-                }}
+                className="flex-1 p-3 bg-gray-700 text-white rounded-lg focus:outline-none"
                 onKeyPress={(e) => {
                   if (e.key === "Enter") sendMessage();
                 }}
               />
               <button
                 onClick={sendMessage}
-                style={{
-                  width: "40px",
-                  height: "40px",
-                  borderRadius: "50%",
-                  background: "#00bfa5",
-                  color: "#fff",
-                  border: "none",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  cursor: "pointer",
-                }}
+                className="ml-4 bg-teal-500 text-white rounded-full p-3"
               >
-                <span style={{ fontSize: "20px" }}>➤</span>
+                ➤
               </button>
             </div>
           </>
         ) : (
-          <div
-            style={{
-              flex: 1,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              background: "#121212",
-            }}
-          >
-            <p
-              style={{ fontSize: "16px", color: "#8696a0", fontStyle: "italic" }}
-            >
-              Select a friend to start chatting
-            </p>
+          <div className="flex-1 flex items-center justify-center">
+            <p className="text-gray-500 text-lg">Select a friend to start chatting</p>
           </div>
         )}
       </div>

@@ -1,65 +1,91 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useRef, useEffect } from 'react';
 
-const AIChat = () => {
+const AiChat = () => {
   const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
+  const [newMessage, setNewMessage] = useState('');
+  const messagesEndRef = useRef(null);
   const [loading, setLoading] = useState(false);
 
-  const sendMessage = async () => {
-    if (!input.trim()) return;
-
-    const newMessages = [...messages, { sender: 'user', text: input }];
-    setMessages(newMessages);
-    setInput('');
-    setLoading(true);
-
-    // Call the backend API with the user's message
-    try {
-      const response = await axios.post('https://localhost:7094/api/chat', {
-        message: input,
-      });
-
-      // Assuming the response has a 'reply' field with the AI's response
-      setMessages([
-        ...newMessages,
-        { sender: 'ai', text: response.data.reply },
-      ]);
-    } catch (error) {
-      setMessages([...newMessages, { sender: 'ai', text: 'Error, please try again!' }]);
-    }
-
-    setLoading(false);
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
-    // Optionally, add a welcome message when the chat is first loaded
-    setMessages([{ sender: 'ai', text: 'Hello! How can I help you today?' }]);
-  }, []);
+    scrollToBottom();
+  }, [messages]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!newMessage.trim()) return;
+
+    try {
+      setLoading(true);
+      // Add user message to chat
+      const userMessage = { role: 'user', content: newMessage };
+      setMessages(prev => [...prev, userMessage]);
+      setNewMessage('');
+
+      // Send to API
+      const response = await fetch('https://localhost:7094/api/HealthAdvice/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: newMessage }),
+      });
+
+      const data = await response.json();
+      
+      // Add AI response to chat
+      setMessages(prev => [...prev, { role: 'assistant', content: data.response }]);
+    } catch (error) {
+      console.error('Failed to send message:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="ai-chat">
-      <div className="chat-box">
-        {messages.map((msg, index) => (
-          <div key={index} className={msg.sender}>
-            <p>{msg.text}</p>
+    <div className="flex flex-col h-[600px] max-w-2xl mx-auto p-4">
+      <div className="flex-1 overflow-y-auto mb-4 p-4 border rounded-lg">
+        {messages.map((message, index) => (
+          <div
+            key={index}
+            className={`mb-4 flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+          >
+            <div
+              className={`max-w-[70%] p-3 rounded-lg ${
+                message.role === 'user'
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-gray-100 text-gray-800'
+              }`}
+            >
+              {message.content}
+            </div>
           </div>
         ))}
+        <div ref={messagesEndRef} />
       </div>
-      <div className="input-area">
+
+      <form onSubmit={handleSubmit} className="flex gap-2">
         <input
           type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          placeholder="Ask your health-related question..."
+          className="flex-1 p-2 border rounded-lg"
           disabled={loading}
-          placeholder="Type your message..."
         />
-        <button onClick={sendMessage} disabled={loading}>
-          Send
+        <button
+          type="submit"
+          disabled={!newMessage.trim() || loading}
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg disabled:opacity-50"
+        >
+          {loading ? 'Sending...' : 'Send'}
         </button>
-      </div>
+      </form>
     </div>
   );
 };
 
-export default AIChat;
+export default AiChat;
