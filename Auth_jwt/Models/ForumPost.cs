@@ -1,4 +1,5 @@
-﻿using Auth_jwt.Data;
+﻿
+using Auth_jwt.Data;
 
 namespace Auth_jwt.Models
 {

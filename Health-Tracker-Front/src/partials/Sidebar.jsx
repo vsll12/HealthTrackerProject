@@ -299,20 +299,19 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                 >
                   <div className="flex items-center justify-between">
                     <div className="grow flex items-center">
-                      <svg
-                        className={`shrink-0 fill-current ${
-                          pathname.includes("messages")
-                            ? "text-violet-500"
-                            : "text-gray-400 dark:text-gray-500"
-                        }`}
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M13.95.879a3 3 0 0 0-4.243 0L1.293 9.293a1 1 0 0 0-.274.51l-1 5a1 1 0 0 0 1.177 1.177l5-1a1 1 0 0 0 .511-.273l8.414-8.414a3 3 0 0 0 0-4.242L13.95.879ZM11.12 2.293a1 1 0 0 1 1.414 0l1.172 1.172a1 1 0 0 1 0 1.414l-8.2 8.2-3.232.646.646-3.232 8.2-8.2Z" />
-                        <path d="M10 14a1 1 0 1 0 0 2h5a1 1 0 1 0 0-2h-5Z" />
-                      </svg>
+                    <svg
+                      className={`shrink-0 fill-current ${
+                        pathname.includes("messages")
+                          ? "text-violet-500"
+                          : "text-gray-400 dark:text-gray-500"
+                      }`}
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H2zm1 2h10v1l-5 3-5-3V6zm0 2.5l4.5 2.7L12 8.5V12H3V8.5z" />
+                    </svg>
                       <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                         Messages
                       </span>
@@ -339,19 +338,18 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                   <div className="flex items-center justify-between">
                     <div className="grow flex items-center">
                     <svg
-  xmlns="http://www.w3.org/2000/svg"
-  width="16"
-  height="16"
-  viewBox="0 0 24 24"
-  fill="none"
-  stroke="currentColor"
-  strokeWidth="2"
-  strokeLinecap="round"
-  strokeLinejoin="round"
-  className="ai-chat-icon"
->
-  <path d="M21 14c0 4-4 7-8 7H7l-4 4V7c0-4 4-7 8-7h6c4 0 7 3 7 7v7z" />
-</svg>
+                      className={`shrink-0 fill-current ${
+                        pathname.includes("ai-chat")
+                          ? "text-violet-500"
+                          : "text-gray-400 dark:text-gray-500"
+                      }`}
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                    >
+                      <path d="M4 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm1 3v1h2V5H5zm4 0v1h2V5H9zm-4 3v1h2V8H5zm4 0v1h2V8H9zm-4 3v1h6v-1H5z" />
+                    </svg>
 
                       <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                         AI Chat
@@ -362,7 +360,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
               </li>
 
               {/* Forum */}
-              {/* <li
+              <li
                 className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r ${
                   pathname.includes("messages") &&
                   "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"
@@ -379,30 +377,30 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                 >
                   <div className="flex items-center justify-between">
                     <div className="grow flex items-center">
-                      <svg
-                        className={`shrink-0 fill-current ${
-                          pathname.includes("forum")
-                            ? "text-violet-500"
-                            : "text-gray-400 dark:text-gray-500"
-                        }`}
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M2 2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm1 2v6h10V4H3zm0 8h10v1H3v-1z" />
-                      </svg>
+                    <svg
+                    className={`shrink-0 fill-current ${
+                      pathname.includes("forum")
+                        ? "text-violet-500"
+                        : "text-gray-400 dark:text-gray-500"
+                    }`}
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M2 2h8a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H8l-2 2v-2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm1 2v4h3v1l1-1h3V4H3zm7 6h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2l-2-2v-2h-1a2 2 0 0 1-2-2h2a2 2 0 0 0 2 2h1v1l1 1h1v-2h-2z" />
+                  </svg>  
                       <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                         Forum
                       </span>
                     </div>
                   </div>
                 </NavLink>
-              </li> */}
-              {/* Calendar */}
+              </li>
+              {/* Forum */}
               <li
                 className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r ${
-                  pathname.includes("calendar") &&
+                  pathname.includes("messages") &&
                   "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"
                 }`}
               >
@@ -410,12 +408,13 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                   end
                   to="/calendar"
                   className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
-                    pathname.includes("calendar")
+                    pathname.includes("forum")
                       ? ""
                       : "hover:text-gray-900 dark:hover:text-white"
                   }`}
                 >
-                  <div className="flex items-center">
+                  <div className="flex items-center justify-between">
+                    <div className="grow flex items-center">
                     <svg
                       className={`shrink-0 fill-current ${
                         pathname.includes("calendar")
@@ -427,13 +426,12 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                       height="16"
                       viewBox="0 0 16 16"
                     >
-                      <path d="M5 4a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2H5Z" />
-                      <path d="M4 0a4 4 0 0 0-4 4v8a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4V4a4 4 0 0 0-4-4H4ZM2 4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4Z" />
-                      <path d="M4 0a4 4 0 0 0-4 4v8a4 4 0 0 0 4 4h8a4 4 0 0 0 4-4V4a4 4 0 0 0-4-4H4ZM2 4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4Z" />
+                      <path d="M3 2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H3zm0 1h10v2H3V3zm0 3h10v7H3V6zm2 2v1h1V8H5zm3 0v1h1V8H8zm3 0v1h1V8h-1zm-6 3v1h1v-1H5zm3 0v1h1v-1H8zm3 0v1h1v-1h-1z" />
                     </svg>
-                    <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                      Calendar
-                    </span>
+                      <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                        Calendar
+                      </span>
+                    </div>
                   </div>
                 </NavLink>
               </li>

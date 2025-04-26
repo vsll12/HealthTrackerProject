@@ -63,7 +63,7 @@ function App() {
       <Route path="/calculator" element={<CalorieCalculator/>}/>
       <Route path="/goals" element={<GoalTracker/>}/>
       <Route path="/meals-calculator" element={<MealsCalculator/>}/>
-      <Route path="/calendar" element={<Calendar />} />
+      <Route path="/calendar" element={<Calendar userId={userId}/>} />
       <Route path="/ai-chat" element={<AIChat />} />
       <Route path="/medicine-information" element={<MedicineInformation/>} />
       <Route path="/exercises-library" element={<ExercisesLibrary/>} />
