@@ -27,28 +27,32 @@ function DailyStepCounterCard() {
       const response = await axios.get(API_BASE_URL, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      
-      const data = response.data; 
 
-      // Günleri sırala ve formatla
-      const formattedData = data.map((item) => ({
-        id: item.id,
-        day: formatDayOfWeek(item.dayOfWeek),
-        date: new Date(item.date),
-        steps: item.steps,
-      })).sort((a, b) => a.date - b.date);
+      const data = response.data;
+
+      const formattedData = data
+        .map((item) => ({
+          id: item.id,
+          day: formatDayOfWeek(item.dayOfWeek),
+          date: new Date(item.date),
+          steps: item.steps,
+        }))
+        .sort((a, b) => a.date - b.date);
 
       setStepData(formattedData);
 
-      // Bugünün verisini bul
       const today = new Date();
-      const todayEntry = formattedData.find(
-        item => item.date.toDateString() === today.toDateString()
-      );
+      const todayEntry = formattedData.find((item) => {
+        const itemDate = new Date(item.date);
+        return (
+          itemDate.getFullYear() === today.getFullYear() &&
+          itemDate.getMonth() === today.getMonth() &&
+          itemDate.getDate() === today.getDate()
+        );
+      });
 
       setTodayData(todayEntry);
-      
-      // Eğer bugünün verisi varsa, adım sayısını ayarla
+
       if (todayEntry) {
         setNewSteps(todayEntry.steps.toString());
       } else {
@@ -65,7 +69,6 @@ function DailyStepCounterCard() {
   };
 
   const formatDayOfWeek = (dayOfWeek) => {
-    // Farklı formatlara destek
     if (dayOfWeek.length > 3) {
       return dayOfWeek.substring(0, 3);
     }
@@ -86,14 +89,12 @@ function DailyStepCounterCard() {
       const steps = parseInt(newSteps);
 
       if (todayData) {
-        // Bugünün verisi varsa güncelle
         await axios.put(
           `${API_BASE_URL}/${todayData.id}`,
           { steps },
           { headers: { Authorization: `Bearer ${token}` } }
         );
       } else {
-        // Bugünün verisi yoksa yeni ekle
         await axios.post(
           API_BASE_URL,
           { steps },
@@ -275,7 +276,7 @@ function DailyStepCounterCard() {
               onClick={submitStepCount}
               className="px-2 py-1 bg-violet-500 text-white rounded text-sm hover:bg-violet-600"
             >
-              {todayData ? "Update" : "Add"}
+              {todayData && todayData.steps > 0 ? "Update" : "Add"}
             </button>
           </>
         )}

@@ -47,10 +47,15 @@ function DailyCaloriesCounterCard() {
 
       setCaloriesData(formattedData);
 
-      const todayISOString = new Date().toISOString().slice(0, 10);
-      const todayEntry = formattedData.find(
-        (item) => item.date.toISOString().slice(0, 10) === todayISOString
-      );
+      const today = new Date();
+      const todayEntry = formattedData.find((item) => {
+        const itemDate = new Date(item.date);
+        return (
+          itemDate.getFullYear() === today.getFullYear() &&
+          itemDate.getMonth() === today.getMonth() &&
+          itemDate.getDate() === today.getDate()
+        );
+      });
 
       setTodayData(todayEntry);
       setNewCalories(todayEntry ? todayEntry.calories.toString() : "");
@@ -145,8 +150,11 @@ function DailyCaloriesCounterCard() {
           tooltip: {
             callbacks: {
               title: (tooltipItems) =>
-                caloriesData[tooltipItems[0].dataIndex].date.toLocaleDateString(),
-              label: (context) => `${context.parsed.y.toLocaleString()} calories`,
+                caloriesData[
+                  tooltipItems[0].dataIndex
+                ].date.toLocaleDateString(),
+              label: (context) =>
+                `${context.parsed.y.toLocaleString()} calories`,
             },
           },
         },
@@ -236,7 +244,7 @@ function DailyCaloriesCounterCard() {
               Today ({new Date().toLocaleDateString()})
             </div>
             <input
-              style={{width:150}}
+              style={{ width: 150 }}
               type="number"
               value={newCalories}
               onChange={handleCaloriesChange}
@@ -247,7 +255,7 @@ function DailyCaloriesCounterCard() {
               onClick={submitCaloriesCount}
               className="px-2 py-1 bg-violet-500 text-white rounded text-sm hover:bg-violet-600"
             >
-              {todayData ? "Update" : "Add"}
+              {todayData && todayData.calories > 0 ? "Update" : "Add"}
             </button>
           </>
         )}

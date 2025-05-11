@@ -16,15 +16,14 @@ namespace Auth_jwt
 			
 			var builder = WebApplication.CreateBuilder(args);
 
-			// CORS configuration for SignalR and frontend
 			builder.Services.AddCors(options =>
 			{
 				options.AddPolicy("AllowChatApp", policy =>
 				{
-					policy.WithOrigins("http://localhost:5174") // Frontend URL
+					policy.WithOrigins("http://localhost:5173") 
 						  .AllowAnyMethod()
 						  .AllowAnyHeader()
-						  .AllowCredentials(); // Required for SignalR with auth
+						  .AllowCredentials(); 
 				});
 			});
 

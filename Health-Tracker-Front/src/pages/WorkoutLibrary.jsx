@@ -15,6 +15,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 
+// Kas grupları ve seviyeler
 const muscleGroups = [
   "back",
   "cardio",
@@ -29,6 +30,28 @@ const muscleGroups = [
 ];
 
 const levels = ["beginner", "intermediate", "advanced"];
+
+// Örnek antrenman planları
+const workoutPlans = [
+  {
+    title: "🏋️ Beginner Full Body Plan",
+    description:
+      "Ideal for those starting out. Focuses on bodyweight and simple movements.",
+    exercises: ["Push-ups", "Bodyweight Squats", "Plank (30 sec)", "Lunges", "Jumping Jacks"],
+  },
+  {
+    title: "🔥 Intermediate Upper Body Split",
+    description:
+      "Build strength with resistance training focused on the upper body.",
+    exercises: ["Pull-ups", "Dumbbell Chest Press", "Shoulder Press", "Bicep Curls", "Tricep Dips"],
+  },
+  {
+    title: "💪 Advanced Legs and Core Challenge",
+    description:
+      "Push your lower body with explosive and core-intensive movements.",
+    exercises: ["Barbell Squats", "Deadlifts", "Leg Press", "Russian Twists", "Hanging Leg Raises"],
+  },
+];
 
 const ExerciseBrowser = () => {
   const navigate = useNavigate();
@@ -126,7 +149,7 @@ const ExerciseBrowser = () => {
             <div className="flex justify-center py-10">
               <CircularProgress color="primary" />
             </div>
-          ) : (
+          ) : exercises.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {exercises.map((ex) => (
                 <Card
@@ -159,6 +182,32 @@ const ExerciseBrowser = () => {
                 </Card>
               ))}
             </div>
+          ) : (
+            !selectedMuscle &&
+            !selectedLevel && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {workoutPlans.map((plan, idx) => (
+                  <Card
+                    key={idx}
+                    className="rounded-2xl shadow-lg transition-transform hover:scale-105 hover:shadow-xl duration-300"
+                  >
+                    <CardContent className="bg-white">
+                      <Typography variant="h6" className="font-semibold text-gray-800 mb-2">
+                        {plan.title}
+                      </Typography>
+                      <Typography variant="body2" className="text-gray-600 mb-4">
+                        {plan.description}
+                      </Typography>
+                      <ul className="list-disc pl-5 text-sm text-gray-700">
+                        {plan.exercises.map((ex, i) => (
+                          <li key={i}>{ex}</li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )
           )}
         </div>
       </div>

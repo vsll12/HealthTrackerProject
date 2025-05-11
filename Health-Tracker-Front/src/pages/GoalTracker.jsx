@@ -93,7 +93,6 @@ const Profile = () => {
           <Select fullWidth value={goalType} onChange={(e) => setGoalType(e.target.value)} displayEmpty>
             <MenuItem value="">Set Goal Type</MenuItem>
             <MenuItem value="Calories">Calorie</MenuItem>
-            <MenuItem value="WaterIntake">Water Intake</MenuItem>
             <MenuItem value="Step">Step</MenuItem>
           </Select>
           <TextField
