@@ -18,6 +18,7 @@ import DashboardCard11 from "../partials/dashboard/DashboardCard11";
 import DashboardCard12 from "../partials/dashboard/DashboardCard12";
 import DashboardCard13 from "../partials/dashboard/DashboardCard13";
 import { useNavigate } from "react-router-dom";
+import AllTodos from "./AllTodos";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -78,6 +79,7 @@ function Dashboard() {
               {/* Card (Reasons for Refunds) */}
               <DashboardCard11 />
               {/* Card (Recent Activity) */}
+              <AllTodos/>
             </div>
           </div>
         </main>

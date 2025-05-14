@@ -173,5 +173,42 @@ namespace Auth_jwt.Controllers
 				return StatusCode(500, $"Failed to delete todo: {ex.Message}");
 			}
 		}
+
+
+
+		[HttpGet("user/{userId}/incomplete")]
+		public async Task<IActionResult> GetIncompleteTodos(string userId)
+		{
+			try
+			{
+				var currentUserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+				if (currentUserId != userId)
+				{
+					return Unauthorized("User ID does not match authenticated user.");
+				}
+
+				var todos = await _context.Todos
+					.Where(t => t.UserId == userId && !t.IsCompleted)
+					.OrderBy(t => t.CreatedAt)
+					.Select(t => new
+					{
+						t.Id,
+						t.UserId,
+						t.Date,
+						t.Task,
+						t.IsCompleted,
+						t.CreatedAt
+					})
+					.ToListAsync();
+
+				return Ok(todos);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"Error in GetIncompleteTodos: {ex.Message}");
+				return StatusCode(500, "Failed to retrieve incomplete todos.");
+			}
+		}
+
 	}
 }
