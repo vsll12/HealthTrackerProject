@@ -67,5 +67,6 @@ namespace Auth_jwt.Data
 		public DbSet<WaterIntake> WaterIntakes { get; set; }
 		public DbSet<CalorieData> CalorieData { get; set; }
         public DbSet<Todo> Todos { get; set; }
+		public DbSet<UserSettings> UserSettings { get; set; } = null!; 
     }
 }

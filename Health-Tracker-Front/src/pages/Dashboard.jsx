@@ -17,6 +17,7 @@ import DashboardCard10 from "../partials/dashboard/DashboardCard10";
 import DashboardCard11 from "../partials/dashboard/DashboardCard11";
 import DashboardCard12 from "../partials/dashboard/DashboardCard12";
 import DashboardCard13 from "../partials/dashboard/DashboardCard13";
+import HealthAdviceCard from "../partials/dashboard/HealthAdvice";
 import { useNavigate } from "react-router-dom";
 import AllTodos from "./AllTodos";
 
@@ -67,19 +68,13 @@ function Dashboard() {
 
             {/* Cards */}
             <div className="grid grid-cols-1 gap-6">
-              {/* Line chart (Acme Plus) */}
+              <HealthAdviceCard/>
               <StepCounterCard />
-              {/* Line chart (Acme Advanced) */}
               <DrinkWaterCard />
-              {/* Line chart (Acme Professional) */}
               <DailyCaloriesCounterCard />
-              {/* Bar chart (Direct vs Indirect) */}
               <DrinkWaterWeeklyReport />
-              {/* Line chart (Real Time Value) */}
               <DashboardCard10 />
-              {/* Card (Reasons for Refunds) */}
               <DashboardCard11 />
-              {/* Card (Recent Activity) */}
               <AllTodos userId={userId}/>
             </div>
           </div>

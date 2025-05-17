@@ -17,6 +17,7 @@ import Calendar from "./pages/Calendar";
 import AIChat from "./pages/AIChat";
 import MedicineInformation from "./pages/MedicineInformation";
 import ExercisesLibrary from "./pages/WorkoutLibrary"
+import Notfilication from "./services/Notfilication"
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("token");
@@ -52,7 +53,11 @@ function App() {
   }, [location.pathname]);
 
   return (
-    <Routes>
+    <>
+      {!['/login', '/register'].includes(location.pathname) && (
+        <Notfilication />
+      )}
+      <Routes>
       <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
@@ -68,6 +73,7 @@ function App() {
       <Route path="/medicine-information" element={<MedicineInformation/>} />
       <Route path="/exercises-library" element={<ExercisesLibrary/>} />
     </Routes>
+    </>
   );
 }
 

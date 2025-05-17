@@ -3,7 +3,7 @@ import axios from "axios";
 
 const DrinkWaterCard = () => {
   const totalCups = 8;
-  const [goal, setGoal] = useState(2000); // default 2 litre
+  const [goal, setGoal] = useState(2000); // Default goal 2000ml
   const [fullCups, setFullCups] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,15 +13,21 @@ const DrinkWaterCard = () => {
   const cupSize = goal / totalCups;
 
   useEffect(() => {
-    const savedGoal = localStorage.getItem("waterGoal");
-    if (savedGoal) {
-      setGoal(parseInt(savedGoal));
-    }
-  }, []);
+    const fetchWaterGoal = async () => {
+      try {
+        const response = await axios.get("https://localhost:7094/api/waterintake/goal", {
+          headers: { "Authorization": `Bearer ${token}` },
+        });
+        setGoal(response.data); // Set goal from the backend
+      } catch (err) {
+        setError("Failed to fetch water goal");
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  useEffect(() => {
-    localStorage.setItem("waterGoal", goal.toString());
-  }, [goal]);
+    fetchWaterGoal();
+  }, [token]);
 
   useEffect(() => {
     const fetchTodayIntake = async () => {
@@ -37,13 +43,11 @@ const DrinkWaterCard = () => {
         setFullCups(cups);
       } catch (err) {
         setError(err.response?.data?.message || err.message);
-      } finally {
-        setIsLoading(false);
       }
     };
 
     fetchTodayIntake();
-  }, [goal]);
+  }, [goal, cupSize, token]);
 
   const handleCupClick = async (idx) => {
     const newFullCups = fullCups === idx + 1 ? idx : idx + 1;
@@ -62,6 +66,19 @@ const DrinkWaterCard = () => {
       setError(null);
     } catch (err) {
       setError(err.response?.data?.message || "");
+    }
+  };
+
+  const handleGoalChange = async (newGoal) => {
+    try {
+      await axios.post(
+        "https://localhost:7094/api/waterintake/goal",
+        newGoal,
+        { headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" } }
+      );
+      setGoal(newGoal); 
+    } catch (err) {
+      setError("Failed to update water goal");
     }
   };
 
@@ -93,7 +110,7 @@ const DrinkWaterCard = () => {
                 <div
                   key={litre}
                   onClick={() => {
-                    setGoal(litre * 1000);
+                    handleGoalChange(litre * 1000);  
                     setShowDropdown(false);
                   }}
                   className="px-4 py-2 hover:bg-blue-100 dark:hover:bg-blue-600 cursor-pointer"

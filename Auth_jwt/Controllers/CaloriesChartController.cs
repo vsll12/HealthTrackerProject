@@ -22,7 +22,35 @@ namespace Auth_jwt.Controllers
 			_logger = logger;
 		}
 
-		[HttpGet]
+        [HttpGet("current-data")]
+        public async Task<ActionResult<CalorieData>> GetCurrentData()
+        {
+            try
+            {
+                var userId = GetCurrentUserId();
+                var today = DateTime.Today;
+
+                // Fetch the most recent CalorieData for the authenticated user
+                var latestCalorieData = await _context.CalorieData
+                    .Where(s => s.UserId == userId && s.Date.Date == today)
+                    .OrderByDescending(s => s.CreatedAt) // or OrderByDescending(s => s.Date) if you want based on the date
+                    .FirstOrDefaultAsync();
+
+                if (latestCalorieData == null)
+                {
+                    return NotFound("No calorie data found for today.");
+                }
+
+                return Ok(latestCalorieData);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching the current calorie data");
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet]
 		public async Task<ActionResult<IEnumerable<CalorieData>>> GetWeeklyCalories()
 		{
 			try
