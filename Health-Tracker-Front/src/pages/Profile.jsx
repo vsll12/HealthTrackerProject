@@ -12,19 +12,12 @@ import {
   Container,
   CircularProgress,
   TextField,
+  Switch,
+  FormControlLabel
 } from "@mui/material";
 
 const Profile = () => {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    // If there's no token, redirect to login page
-    if (!token) {
-      navigate("/login");
-    }
-  }, [navigate]);
 
   const [user, setUser] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -35,8 +28,15 @@ const Profile = () => {
     height: "",
   });
   const [selectedFile, setSelectedFile] = useState(null);
-  const token = localStorage.getItem("token");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, [navigate, token]);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -89,7 +89,6 @@ const Profile = () => {
           },
         }
       );
-
       setUser((prev) => ({
         ...prev,
         ...formData,
@@ -113,7 +112,6 @@ const Profile = () => {
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-
         <main className="grow">
           <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
             <Container maxWidth="sm" style={{ marginTop: "30px" }}>
@@ -136,7 +134,7 @@ const Profile = () => {
                     boxShadow: 2,
                   }}
                 />
-
+                {/* Profil düzenleme kısmı */}
                 {isEditing ? (
                   <CardContent>
                     <TextField
@@ -180,7 +178,6 @@ const Profile = () => {
                       onChange={handleFileChange}
                       style={{ marginTop: "10px" }}
                     />
-
                     <Button
                       variant="contained"
                       color="primary"

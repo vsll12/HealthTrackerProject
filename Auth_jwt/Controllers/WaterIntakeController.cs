@@ -21,7 +21,38 @@ namespace Auth_jwt.Controllers
 			_context = context;
 		}
 
-		[HttpPost]
+        [HttpGet("goal")]
+        public async Task<ActionResult<int>> GetWaterGoal()
+        {
+            var userId = GetUserId();
+            var user = await _context.Users.FindAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            return Ok(user.WaterGoal);  
+        }
+
+        [HttpPost("goal")]
+        public async Task<IActionResult> SetWaterGoal([FromBody] int goal)
+        {
+            var userId = GetUserId();
+            var user = await _context.Users.FindAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            user.WaterGoal = goal;  
+            await _context.SaveChangesAsync();
+
+            return Ok();  
+        }
+
+        [HttpPost]
 		public async Task<IActionResult> AddWaterIntake([FromBody] int amountInMilliliters)
 		{
 			var userId = GetUserId();

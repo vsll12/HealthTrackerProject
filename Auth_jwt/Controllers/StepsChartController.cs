@@ -28,7 +28,41 @@ namespace Auth_jwt.Controllers
 			_logger = logger;
 		}
 
-		[HttpGet]
+        [HttpGet("daily")]
+        public async Task<ActionResult<StepData>> GetDailySteps()
+        {
+            try
+            {
+                var userId = GetCurrentUserId();
+                if (string.IsNullOrEmpty(userId))
+                {
+                    _logger.LogWarning("User ID not found in token.");
+                    return Unauthorized("Kullanıcı kimliği bulunamadı.");
+                }
+
+                var today = DateTime.Today;
+
+                // Fetch the steps data for today
+                var dailySteps = await _context.StepData
+                    .Where(s => s.UserId == userId && s.Date.Date == today)
+                    .FirstOrDefaultAsync();
+
+                if (dailySteps == null)
+                {
+                    // If no steps data is found for today, return a 404 with a message
+                    return NotFound("Bugün için adım verisi bulunamadı.");
+                }
+
+                return Ok(dailySteps);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Günlük adım verisi alınırken hata oluştu.");
+                return StatusCode(500, "Günlük adım verileri alınamadı: " + ex.Message);
+            }
+        }
+
+        [HttpGet]
 		public async Task<ActionResult<IEnumerable<StepData>>> GetWeeklySteps()
 		{
 			try

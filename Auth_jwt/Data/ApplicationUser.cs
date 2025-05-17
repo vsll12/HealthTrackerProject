@@ -17,6 +17,8 @@ namespace Auth_jwt.Data
 		public List<StepRecord> StepRecords { get; set; } = new();
 
 		public ICollection<Message> SentMessages { get; set; } = new List<Message>();  
-		public ICollection<Message> ReceivedMessages { get; set; } = new List<Message>(); 
-	}
+		public ICollection<Message> ReceivedMessages { get; set; } = new List<Message>();
+
+        public int WaterGoal { get; set; } = 2000;
+    }
 }
