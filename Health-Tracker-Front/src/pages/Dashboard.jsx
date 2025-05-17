@@ -23,6 +23,7 @@ import AllTodos from "./AllTodos";
 function Dashboard() {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -79,7 +80,7 @@ function Dashboard() {
               {/* Card (Reasons for Refunds) */}
               <DashboardCard11 />
               {/* Card (Recent Activity) */}
-              <AllTodos/>
+              <AllTodos userId={userId}/>
             </div>
           </div>
         </main>
