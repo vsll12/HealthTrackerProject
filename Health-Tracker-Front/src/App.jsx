@@ -4,20 +4,19 @@ import { Routes, Route, useLocation, useNavigate, Navigate } from "react-router-
 import "./css/style.css";
 import "./charts/ChartjsConfig";
 
-import Chat from "./pages/Chat";
+import Chat from "./pages/ChatComponent";
 import Dashboard from "./pages/Dashboard";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Forum from "./pages/Forum";
 import CalorieCalculator from "./pages/CaloriesCalculator";
-import GoalTracker from "./pages/GoalTracker";
 import MealsCalculator from "./pages/MealCaloriesCalculator"
 import Calendar from "./pages/Calendar";
-import AIChat from "./pages/AIChat";
 import MedicineInformation from "./pages/MedicineInformation";
 import ExercisesLibrary from "./pages/WorkoutLibrary"
 import Notfilication from "./services/Notfilication"
+import Intro from "./pages/Intro"
 
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem("token");
@@ -58,7 +57,7 @@ function App() {
         <Notfilication />
       )}
       <Routes>
-      <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+      <Route path="/" element={<Intro />} />
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       <Route path="/messages/:id" element={<ProtectedRoute><Chat userId={userId} /></ProtectedRoute>} />
@@ -66,10 +65,8 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route path="/calculator" element={<CalorieCalculator/>}/>
-      <Route path="/goals" element={<GoalTracker/>}/>
       <Route path="/meals-calculator" element={<MealsCalculator/>}/>
       <Route path="/calendar" element={<Calendar userId={userId}/>} />
-      <Route path="/ai-chat" element={<AIChat />} />
       <Route path="/medicine-information" element={<MedicineInformation/>} />
       <Route path="/exercises-library" element={<ExercisesLibrary/>} />
     </Routes>

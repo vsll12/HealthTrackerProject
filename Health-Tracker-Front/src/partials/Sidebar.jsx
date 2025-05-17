@@ -177,35 +177,6 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                   );
                 }}
               </SidebarLinkGroup>
-              {/* Goals */}
-              <SidebarLinkGroup
-                activecondition={pathname === "/" || pathname.includes("goals")}
-              >
-                {(handleClick, open) => {
-                  return (
-                    <React.Fragment>
-                      <Link
-                        to="/goals"
-                        className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
-                          pathname === "/" || pathname.includes("goals")
-                            ? ""
-                            : "hover:text-gray-900 dark:hover:text-white"
-                        }`}
-                        onClick={() => setSidebarExpanded(true)}
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center">
-                            <GoGoal />
-                            <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                              Goals
-                            </span>
-                          </div>
-                        </div>
-                      </Link>
-                    </React.Fragment>
-                  );
-                }}
-              </SidebarLinkGroup>
               {/* CalorieCalculator */}
               <SidebarLinkGroup
                 activecondition={pathname === "/meals-calculator"}
@@ -284,7 +255,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
               {/* Messages */}
               <li
                 className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r ${
-                  pathname.includes("messages") &&
+                  pathname.startsWith("/messages") &&
                   "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"
                 }`}
               >
@@ -292,26 +263,26 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                   end
                   to={`/messages/${userId}`}
                   className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
-                    pathname.includes("messages")
+                    pathname.startsWith("/messages")
                       ? ""
                       : "hover:text-gray-900 dark:hover:text-white"
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="grow flex items-center">
-                    <svg
-                      className={`shrink-0 fill-current ${
-                        pathname.includes("messages")
-                          ? "text-violet-500"
-                          : "text-gray-400 dark:text-gray-500"
-                      }`}
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H2zm1 2h10v1l-5 3-5-3V6zm0 2.5l4.5 2.7L12 8.5V12H3V8.5z" />
-                    </svg>
+                      <svg
+                        className={`shrink-0 fill-current ${
+                          pathname.includes("messages")
+                            ? "text-violet-500"
+                            : "text-gray-400 dark:text-gray-500"
+                        }`}
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H2zm1 2h10v1l-5 3-5-3V6zm0 2.5l4.5 2.7L12 8.5V12H3V8.5z" />
+                      </svg>
                       <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                         Messages
                       </span>
@@ -320,49 +291,10 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                 </NavLink>
               </li>
 
-              {/* <li
-                className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r ${
-                  pathname.includes("messages") &&
-                  "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"
-                }`}
-              >
-                <NavLink
-                  end
-                  to={`/ai-chat`}
-                  className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
-                    pathname.includes("messages")
-                      ? ""
-                      : "hover:text-gray-900 dark:hover:text-white"
-                  }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="grow flex items-center">
-                    <svg
-                      className={`shrink-0 fill-current ${
-                        pathname.includes("ai-chat")
-                          ? "text-violet-500"
-                          : "text-gray-400 dark:text-gray-500"
-                      }`}
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M4 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm1 3v1h2V5H5zm4 0v1h2V5H9zm-4 3v1h2V8H5zm4 0v1h2V8H9zm-4 3v1h6v-1H5z" />
-                    </svg>
-
-                      <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                        AI Chat
-                      </span>
-                    </div>
-                  </div>
-                </NavLink>
-              </li> */}
-
               {/* Forum */}
               <li
                 className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r ${
-                  pathname.includes("messages") &&
+                  pathname === "/forum" &&
                   "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"
                 }`}
               >
@@ -370,26 +302,26 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                   end
                   to="/forum"
                   className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
-                    pathname.includes("forum")
+                    pathname === "/forum"
                       ? ""
                       : "hover:text-gray-900 dark:hover:text-white"
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="grow flex items-center">
-                    <svg
-                    className={`shrink-0 fill-current ${
-                      pathname.includes("forum")
-                        ? "text-violet-500"
-                        : "text-gray-400 dark:text-gray-500"
-                    }`}
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M2 2h8a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H8l-2 2v-2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm1 2v4h3v1l1-1h3V4H3zm7 6h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2l-2-2v-2h-1a2 2 0 0 1-2-2h2a2 2 0 0 0 2 2h1v1l1 1h1v-2h-2z" />
-                  </svg>  
+                      <svg
+                        className={`shrink-0 fill-current ${
+                          pathname.includes("forum")
+                            ? "text-violet-500"
+                            : "text-gray-400 dark:text-gray-500"
+                        }`}
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M2 2h8a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H8l-2 2v-2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm1 2v4h3v1l1-1h3V4H3zm7 6h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2l-2-2v-2h-1a2 2 0 0 1-2-2h2a2 2 0 0 0 2 2h1v1l1 1h1v-2h-2z" />
+                      </svg>
                       <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                         Forum
                       </span>
@@ -397,10 +329,11 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                   </div>
                 </NavLink>
               </li>
-              {/* Forum */}
+              {/* Calendar */}
+              {/* Calendar */}
               <li
                 className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r ${
-                  pathname.includes("messages") &&
+                  pathname.includes("calendar") &&
                   "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"
                 }`}
               >
@@ -408,26 +341,26 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                   end
                   to="/calendar"
                   className={`block text-gray-800 dark:text-gray-100 truncate transition duration-150 ${
-                    pathname.includes("forum")
+                    pathname.includes("calendar")
                       ? ""
                       : "hover:text-gray-900 dark:hover:text-white"
                   }`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="grow flex items-center">
-                    <svg
-                      className={`shrink-0 fill-current ${
-                        pathname.includes("calendar")
-                          ? "text-violet-500"
-                          : "text-gray-400 dark:text-gray-500"
-                      }`}
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 16 16"
-                    >
-                      <path d="M3 2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H3zm0 1h10v2H3V3zm0 3h10v7H3V6zm2 2v1h1V8H5zm3 0v1h1V8H8zm3 0v1h1V8h-1zm-6 3v1h1v-1H5zm3 0v1h1v-1H8zm3 0v1h1v-1h-1z" />
-                    </svg>
+                      <svg
+                        className={`shrink-0 fill-current ${
+                          pathname.includes("calendar")
+                            ? "text-violet-500"
+                            : "text-gray-400 dark:text-gray-500"
+                        }`}
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M3 2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H3zm0 1h10v2H3V3zm0 3h10v7H3V6zm2 2v1h1V8H5zm3 0v1h1V8H8zm3 0v1h1V8h-1zm-6 3v1h1v-1H5zm3 0v1h1v-1H8zm3 0v1h1v-1h-1z" />
+                      </svg>
                       <span className="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                         Calendar
                       </span>
@@ -510,13 +443,6 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                             <NavLink end to={`/register`}>
                               <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
                                 Sign up
-                              </span>
-                            </NavLink>
-                          </li>
-                          <li className="mb-1 last:mb-0">
-                            <NavLink end to={`/profile`}>
-                              <span className="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
-                                Reset Password
                               </span>
                             </NavLink>
                           </li>

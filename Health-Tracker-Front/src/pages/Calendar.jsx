@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as signalR from '@microsoft/signalr';
-import { MdKeyboardBackspace, MdDarkMode, MdLightMode, MdEdit, MdDelete, MdCheckCircle, MdAdd } from 'react-icons/md';
+import { MdKeyboardBackspace, MdEdit, MdDelete, MdCheckCircle, MdAdd } from 'react-icons/md';
+import Header from "../partials/Header";
+import Sidebar from "../partials/Sidebar";
 
 const API_URL = 'https://localhost:7094';
 
@@ -15,9 +17,10 @@ const Calendar = ({ userId }) => {
   const [newTask, setNewTask] = useState('');
   const [editingTodoId, setEditingTodoId] = useState(null);
   const [editingTask, setEditingTask] = useState('');
-  const [isDarkMode, setIsDarkMode] = useState(true);
   const [error, setError] = useState(null);
   const [connection, setConnection] = useState(null);
+
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -378,8 +381,6 @@ const Calendar = ({ userId }) => {
               ? 'bg-indigo-500 text-white'
               : isToday
               ? 'bg-indigo-100 text-indigo-800'
-              : isDarkMode
-              ? 'hover:bg-gray-700'
               : 'hover:bg-gray-200'
           }`}
         >
@@ -395,192 +396,161 @@ const Calendar = ({ userId }) => {
   };
 
   return (
-    <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900 text-gray-100' : 'bg-gray-100 text-gray-900'}`}>
-      <div className="p-8 max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center space-x-4">
-            <button
-              onClick={() => navigate('/dashboard')}
-              className="flex items-center px-4 py-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition"
-            >
-              <MdKeyboardBackspace size={20} className="mr-2" />
-              Back to Dashboard
-            </button>
-            <h2 className="text-2xl font-semibold">
-              {currentDate.toLocaleString('en-US', { month: 'long' })} {year}
-            </h2>
-          </div>
-          <button
-            onClick={() => setIsDarkMode(!isDarkMode)}
-            className={`p-2 rounded-full ${
-              isDarkMode ? 'bg-gray-700 text-yellow-400' : 'bg-gray-200 text-gray-800'
-            } hover:bg-opacity-80 transition`}
-            title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-          >
-            {isDarkMode ? <MdLightMode size={20} /> : <MdDarkMode size={20} />}
-          </button>
-        </div>
-
-        {/* Navigation */}
-        <div className="flex justify-between mb-4">
-          <button
-            onClick={() => changeMonth(-1)}
-            className={`px-4 py-2 rounded-md ${
-              isDarkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'
-            } transition`}
-          >
-            ◀ Previous
-          </button>
-          <button
-            onClick={() => changeMonth(1)}
-            className={`px-4 py-2 rounded-md ${
-              isDarkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'
-            } transition`}
-          >
-            Next ▶
-          </button>
-        </div>
-
-        {/* Weekday Labels */}
-        <div className="grid grid-cols-7 text-lg font-semibold text-gray-600 dark:text-gray-300 mb-4">
-          {weekdays.map((day) => (
-            <div key={day} className="text-center">
-              {day}
-            </div>
-          ))}
-        </div>
-
-        {/* Days */}
-        <div className="grid grid-cols-7 gap-3">{renderDays()}</div>
-      </div>
-
-      {/* Todo Modal */}
-      {selectedDate && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div
-            className={`w-full max-w-md p-6 rounded-lg shadow-xl ${
-              isDarkMode ? 'bg-gray-800 text-gray-100' : 'bg-white text-gray-900'
-            }`}
-          >
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold">
-                To-Dos for {selectedDate.toLocaleDateString()}
-              </h3>
+    <div className="flex h-screen overflow-hidden">
+      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+        <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+        <div className="min-h-screen bg-gray-100 text-gray-900">
+          <div className="p-8 max-w-4xl mx-auto">
+            {/* Navigation */}
+            <div className="flex justify-between mb-4">
               <button
-                onClick={closeTodoModal}
-                className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                onClick={() => changeMonth(-1)}
+                className="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300 transition"
               >
-                ✕
+                ◀ Previous
+              </button>
+              <button
+                onClick={() => changeMonth(1)}
+                className="px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300 transition"
+              >
+                Next ▶
               </button>
             </div>
 
-            {error && (
-              <div className="p-3 bg-red-100 text-red-700 rounded-md mb-4">
-                {error}
+            {/* Weekday Labels */}
+            <div className="grid grid-cols-7 text-lg font-semibold text-gray-600 mb-4">
+              {weekdays.map((day) => (
+                <div key={day} className="text-center">
+                  {day}
+                </div>
+              ))}
+            </div>
+
+            {/* Days */}
+            <div className="grid grid-cols-7 gap-3">{renderDays()}</div>
+          </div>
+
+          {/* Todo Modal */}
+          {selectedDate && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="w-full max-w-md p-6 rounded-lg shadow-xl bg-white text-gray-900">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-semibold">
+                    To-Dos for {selectedDate.toLocaleDateString()}
+                  </h3>
+                  <button
+                    onClick={closeTodoModal}
+                    className="text-gray-500 hover:text-gray-700"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                {error && (
+                  <div className="p-3 bg-red-100 text-red-700 rounded-md mb-4">
+                    {error}
+                  </div>
+                )}
+
+                {/* Todo Input */}
+                <div className="flex items-center mb-4">
+                  <input
+                    type="text"
+                    value={newTask}
+                    onChange={(e) => setNewTask(e.target.value)}
+                    placeholder="Add a new task..."
+                    className="flex-1 p-2 rounded-md border bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter') addTodo();
+                    }}
+                  />
+                  <button
+                    onClick={addTodo}
+                    className="ml-2 p-2 bg-indigo-500 text-white rounded-full hover:bg-indigo-600 transition"
+                  >
+                    <MdAdd size={20} />
+                  </button>
+                </div>
+
+                {/* Todo List */}
+                <div className="max-h-64 overflow-y-auto">
+                  {todos.length === 0 ? (
+                    <p className="text-gray-500 text-sm">No tasks for this day.</p>
+                  ) : (
+                    <ul className="space-y-2">
+                      {todos.map((todo) => (
+                        <li
+                          key={todo.id}
+                          className="flex items-center justify-between p-2 rounded-md bg-opacity-50"
+                        >
+                          {editingTodoId === todo.id ? (
+                            <div className="flex-1 flex items-center">
+                              <input
+                                type="text"
+                                value={editingTask}
+                                onChange={(e) => setEditingTask(e.target.value)}
+                                className="flex-1 p-2 rounded-md border bg-gray-50 border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
+                              />
+                              <button
+                                onClick={() => updateTodo(todo.id)}
+                                className="ml-2 p-1 text-indigo-500 hover:text-indigo-600"
+                              >
+                                Save
+                              </button>
+                              <button
+                                onClick={() => setEditingTodoId(null)}
+                                className="ml-2 p-1 text-gray-500 hover:text-gray-600"
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          ) : (
+                            <>
+                              <div className="flex items-center flex-1">
+                                <button
+                                  onClick={() => toggleTodoCompletion(todo.id)}
+                                  className={`mr-2 ${
+                                    todo.isCompleted ? 'text-green-500' : 'text-gray-500'
+                                  }`}
+                                >
+                                  <MdCheckCircle size={20} />
+                                </button>
+                                <span
+                                  className={`text-sm ${todo.isCompleted ? 'line-through text-gray-500' : ''}`}
+                                >
+                                  {todo.task}
+                                </span>
+                              </div>
+                              <div className="flex space-x-2">
+                                <button
+                                  onClick={() => {
+                                    setEditingTodoId(todo.id);
+                                    setEditingTask(todo.task);
+                                  }}
+                                  className="p-1 text-indigo-500 hover:text-indigo-600"
+                                >
+                                  <MdEdit size={16} />
+                                </button>
+                                <button
+                                  onClick={() => deleteTodo(todo.id)}
+                                  className="p-1 text-red-500 hover:text-red-600"
+                                >
+                                  <MdDelete size={16} />
+                                </button>
+                              </div>
+                            </>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
               </div>
-            )}
-
-            {/* Todo Input */}
-            <div className="flex items-center mb-4">
-              <input
-                type="text"
-                value={newTask}
-                onChange={(e) => setNewTask(e.target.value)}
-                placeholder="Add a new task..."
-                className={`flex-1 p-2 rounded-md border ${
-                  isDarkMode ? 'bg-gray-700 border-gray-600 text-gray-100' : 'bg-gray-50 border-gray-300 text-gray-900'
-                } focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm`}
-                onKeyPress={(e) => {
-                  if (e.key === 'Enter') addTodo();
-                }}
-              />
-              <button
-                onClick={addTodo}
-                className="ml-2 p-2 bg-indigo-500 text-white rounded-full hover:bg-indigo-600 transition"
-              >
-                <MdAdd size={20} />
-              </button>
             </div>
-
-            {/* Todo List */}
-            <div className="max-h-64 overflow-y-auto">
-              {todos.length === 0 ? (
-                <p className="text-gray-500 text-sm">No tasks for this day.</p>
-              ) : (
-                <ul className="space-y-2">
-                  {todos.map((todo) => (
-                    <li
-                      key={todo.id}
-                      className="flex items-center justify-between p-2 rounded-md bg-opacity-50"
-                    >
-                      {editingTodoId === todo.id ? (
-                        <div className="flex-1 flex items-center">
-                          <input
-                            type="text"
-                            value={editingTask}
-                            onChange={(e) => setEditingTask(e.target.value)}
-                            className={`flex-1 p-2 rounded-md border ${
-                              isDarkMode ? 'bg-gray-700 border-gray-600 text-gray-100' : 'bg-gray-50 border-gray-300 text-gray-900'
-                            } focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm`}
-                          />
-                          <button
-                            onClick={() => updateTodo(todo.id)}
-                            className="ml-2 p-1 text-indigo-500 hover:text-indigo-600"
-                          >
-                            Save
-                          </button>
-                          <button
-                            onClick={() => setEditingTodoId(null)}
-                            className="ml-2 p-1 text-gray-500 hover:text-gray-600"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      ) : (
-                        <>
-                          <div className="flex items-center flex-1">
-                            <button
-                              onClick={() => toggleTodoCompletion(todo.id)}
-                              className={`mr-2 ${
-                                todo.isCompleted ? 'text-green-500' : 'text-gray-500'
-                              }`}
-                            >
-                              <MdCheckCircle size={20} />
-                            </button>
-                            <span
-                              className={`text-sm ${todo.isCompleted ? 'line-through text-gray-500' : ''}`}
-                            >
-                              {todo.task}
-                            </span>
-                          </div>
-                          <div className="flex space-x-2">
-                            <button
-                              onClick={() => {
-                                setEditingTodoId(todo.id);
-                                setEditingTask(todo.task);
-                              }}
-                              className="p-1 text-indigo-500 hover:text-indigo-600"
-                            >
-                              <MdEdit size={16} />
-                            </button>
-                            <button
-                              onClick={() => deleteTodo(todo.id)}
-                              className="p-1 text-red-500 hover:text-red-600"
-                            >
-                              <MdDelete size={16} />
-                            </button>
-                          </div>
-                        </>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
