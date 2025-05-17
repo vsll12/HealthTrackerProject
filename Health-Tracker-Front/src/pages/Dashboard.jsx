@@ -19,10 +19,12 @@ import DashboardCard12 from "../partials/dashboard/DashboardCard12";
 import DashboardCard13 from "../partials/dashboard/DashboardCard13";
 import HealthAdviceCard from "../partials/dashboard/HealthAdvice";
 import { useNavigate } from "react-router-dom";
+import AllTodos from "./AllTodos";
 
 function Dashboard() {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -73,6 +75,7 @@ function Dashboard() {
               <DrinkWaterWeeklyReport />
               <DashboardCard10 />
               <DashboardCard11 />
+              <AllTodos userId={userId}/>
             </div>
           </div>
         </main>

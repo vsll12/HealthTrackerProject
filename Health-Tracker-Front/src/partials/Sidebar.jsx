@@ -320,7 +320,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                 </NavLink>
               </li>
 
-              <li
+              {/* <li
                 className={`pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r ${
                   pathname.includes("messages") &&
                   "from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]"
@@ -357,7 +357,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
                     </div>
                   </div>
                 </NavLink>
-              </li>
+              </li> */}
 
               {/* Forum */}
               <li
