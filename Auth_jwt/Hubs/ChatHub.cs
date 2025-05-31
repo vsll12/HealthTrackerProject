@@ -198,8 +198,8 @@ namespace Auth_jwt.Hubs
 					CreatedAt = DateTime.UtcNow
 				};
 
-				_context.Todos.Add(todo);
-				await _context.SaveChangesAsync();
+				//_context.Todos.Add(todo);
+				//await _context.SaveChangesAsync();
 
 				var response = new
 				{
